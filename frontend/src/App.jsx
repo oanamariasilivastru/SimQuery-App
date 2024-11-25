@@ -1,3 +1,4 @@
+// frontend/src/App.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -13,10 +14,15 @@ function App() {
   };
 
   const checkSimilarity = async () => {
+    if (!inputText.trim()) {
+      setError('Te rog să introduci un text.');
+      return;
+    }
+
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post('http://127.0.0.1:5000/', {
+      const response = await axios.post('http://127.0.0.1:5000/predict', {
         text: inputText,
       });
       setResults(response.data);

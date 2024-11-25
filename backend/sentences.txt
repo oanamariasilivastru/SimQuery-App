@@ -1,50 +1,60 @@
-The sun rises in the east.
-The quick brown fox jumps over the lazy dog.
-A journey of a thousand miles begins with a single step.
-To be or not to be, that is the question.
-All that glitters is not gold.
-The pen is mightier than the sword.
-A picture is worth a thousand words.
-When in Rome, do as the Romans do.
-The early bird catches the worm.
-Beauty is in the eye of the beholder.
-Actions speak louder than words.
-The squeaky wheel gets the grease.
-A watched pot never boils.
-You can’t judge a book by its cover.
-The grass is always greener on the other side.
-Don’t count your chickens before they hatch.
-Hope for the best, but prepare for the worst.
-Good things come to those who wait.
-Practice makes perfect.
-Time flies when you’re having fun.
-Laughter is the best medicine.
-You can’t have your cake and eat it too.
-The more, the merrier.
-It’s better to be safe than sorry.
-Curiosity killed the cat.
-The best things in life are free.
-A friend in need is a friend indeed.
-If it ain’t broke, don’t fix it.
-Two heads are better than one.
-A fool and his money are soon parted.
-You can’t make an omelette without breaking eggs.
-Absence makes the heart grow fonder.
-A leopard can’t change its spots.
-Better late than never.
-The road to hell is paved with good intentions.
-Out of sight, out of mind.
-A chain is only as strong as its weakest link.
-There’s no such thing as a free lunch.
-Blood is thicker than water.
-If you want something done right, do it yourself.
-The customer is always right.
-The grass is always greener on the other side of the fence.
-If you can’t beat them, join them.
-You can lead a horse to water, but you can’t make it drink.
-Time is money.
-Better safe than sorry.
-The apple doesn’t fall far from the tree.
-What goes around comes around.
-Every cloud has a silver lining.
-A penny saved is a penny earned.
+The only limit to our realization of tomorrow is our doubts of today.
+In the middle of every difficulty lies opportunity.
+Do not go where the path may lead, go instead where there is no path and leave a trail.
+The greatest glory in living lies not in never falling, but in rising every time we fall.
+Life is what happens when you're busy making other plans.
+Spread love everywhere you go. Let no one ever come to you without leaving happier.
+Always remember that you are absolutely unique. Just like everyone else.
+Success is not final, failure is not fatal: It is the courage to continue that counts.
+It is during our darkest moments that we must focus to see the light.
+Happiness is not something ready-made. It comes from your own actions.
+The purpose of our lives is to be happy.
+Turn your wounds into wisdom.
+The way to get started is to quit talking and begin doing.
+Don't judge each day by the harvest you reap but by the seeds that you plant.
+To live is the rarest thing in the world. Most people exist, that is all.
+Life is really simple, but we insist on making it complicated.
+May you live every day of your life.
+Do what you can, with what you have, where you are.
+The best way to predict the future is to create it.
+What we achieve inwardly will change outer reality.
+We know what we are, but know not what we may be.
+No act of kindness, no matter how small, is ever wasted.
+If you want to go fast, go alone. If you want to go far, go together.
+Kindness is a language that the deaf can hear and the blind can see.
+The journey of a thousand miles begins with one step.
+A smooth sea never made a skilled sailor.
+The harder the conflict, the greater the triumph.
+Do what you love and success will follow. Passion is the fuel behind a successful career.
+Strive not to be a success, but rather to be of value.
+What lies behind us and what lies before us are tiny matters compared to what lies within us.
+The greatest weapon against stress is our ability to choose one thought over another.
+Don’t cry because it’s over, smile because it happened.
+You miss 100% of the shots you don’t take.
+Fall seven times and stand up eight.
+The best time to plant a tree was 20 years ago. The second best time is now.
+An unexamined life is not worth living.
+If you tell the truth, you don't have to remember anything.
+The only way to do great work is to love what you do.
+Be yourself; everyone else is already taken.
+It does not matter how slowly you go as long as you do not stop.
+Success usually comes to those who are too busy to be looking for it.
+Don’t let yesterday take up too much of today.
+Opportunities don’t happen. You create them.
+Act as if what you do makes a difference. It does.
+Don’t watch the clock; do what it does. Keep going.
+The future depends on what you do today.
+It always seems impossible until it’s done.
+If you want to lift yourself up, lift up someone else.
+Your time is limited, don’t waste it living someone else’s life.
+The only thing we have to fear is fear itself.
+The secret of getting ahead is getting started.
+It’s not what happens to you, but how you react to it that matters.
+The mind is everything. What you think you become.
+I think, therefore I am.
+What we think, we become.
+Dream big and dare to fail.
+The best revenge is massive success.
+Do not let what you cannot do interfere with what you can do.
+Logic will get you from A to B. Imagination will take you everywhere.
+A person who never made a mistake never tried anything new.
