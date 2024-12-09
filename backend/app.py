@@ -120,7 +120,7 @@ def sentence_to_glove_embedding(sentence, glove_embeddings):
             vectors.append(np.zeros(300))
     if vectors:
         return np.mean(vectors, axis=0)
-        return np.zeros(300)
+    return np.zeros(300)
 
 def normalize_embedding(embedding):
     norm = np.linalg.norm(embedding)
@@ -130,7 +130,6 @@ def preprocess_text(text):
     print(f"Preprocessing text: {text}")
     try:
         embedding = sentence_to_glove_embedding(text, glove_embeddings)
-
         embedding = normalize_embedding(embedding)
 
         repeat_count = (16384 // len(embedding)) + 1
@@ -143,7 +142,6 @@ def preprocess_text(text):
         print("Error during text preprocessing:", e)
         traceback.print_exc()
         raise
-
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -175,7 +173,9 @@ def predict():
         top_5 = sorted(similarities, key=lambda x: x[1], reverse=True)[:5]
         print("Top 5 similar sentences:", top_5)
 
-        return jsonify(top_5)
+        # Transformăm fiecare tuple (fraza, scor) într-un dicționar cu chei clare
+        top_5_dict = [{"sentence": s, "score": sc} for s, sc in top_5]
+        return jsonify(top_5_dict)
     except Exception as e:
         print("Error during prediction:", e)
         traceback.print_exc()
@@ -183,4 +183,4 @@ def predict():
 
 if __name__ == "__main__":
     print("Starting Flask server...")
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)

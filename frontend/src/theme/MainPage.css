@@ -1,0 +1,457 @@
+/* ===== IMPORTURI ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
+
+/* ===== BASE ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: url('https://img.freepik.com/free-vector/gradient-purple-blue-wave-background-abstract_343694-3759.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    /* Permite paginii să se extindă */
+}
+
+/* ===== CONTAINER GENERAL ===== */
+.app-container {
+    display: flex;
+    width: 100%;
+    position: relative;
+    /* Permite containerului să se extindă */
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    background: rgba(25, 118, 210, 0.8); /* Fundal albastru semi-transparent */
+    color: #fff;
+    transition: transform 0.3s ease, width 0.3s ease, background 0.3s ease;
+    overflow: hidden;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0 15px 15px 0;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.open {
+    width: 300px; /* Lățime mărită a sidebar-ului */
+    transform: translateX(0);
+}
+
+.sidebar.closed {
+    width: 0;
+    transform: translateX(-100%);
+}
+
+/* ===== CONȚINUT SIDEBAR ===== */
+.sidebar .user-info {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: rgba(13, 71, 161, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: padding 0.3s ease;
+}
+
+.sidebar .user-info .avatar {
+    margin-right: 10px;
+}
+
+.sidebar .user-info .user-name {
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.closed .user-info .user-name {
+    opacity: 0;
+}
+
+.sidebar .profile-view {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.sidebar .profile-view:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar .profile-view i {
+    margin-right: 8px;
+}
+
+.sidebar .profile-view span {
+    font-size: 0.9rem;
+    color: #fff;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.closed .profile-view span {
+    opacity: 0;
+}
+
+/* ===== ISTORIC ===== */
+.sidebar .history {
+    padding: 15px;
+    overflow-y: auto;
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar .history h2 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.sidebar.closed .history h2,
+.sidebar.closed .history .history-item p {
+    display: none;
+}
+
+.sidebar .history .history-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .history .history-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+/* ===== STILURI PENTRU TEXT ȘI DATĂ ÎN ISTORIC ===== */
+.sidebar .history .history-item p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 5px 0;
+}
+
+.sidebar .history .history-item span {
+    font-size: 0.85rem;
+    color: #ccc;
+}
+
+/* ===== BUTON TOGGLE ===== */
+.toggle-button {
+    position: fixed;
+    top: 20px;
+    left: 300px; /* Ajustat pentru noua lățime a sidebar-ului */
+    transform: translateX(-50%);
+    background-color: rgba(25, 118, 210, 0.8);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    transition: left 0.3s ease, transform 0.3s ease;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.sidebar.closed + .toggle-button {
+    left: 10px;
+    transform: translateX(0);
+}
+
+/* ===== BUTON THEME TOGGLE ===== */
+.theme-toggle-button {
+    position: fixed;
+    top: 20px;
+    right: 60px;
+    background: rgba(25, 118, 210, 0.8);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.theme-toggle-button:hover {
+    background: rgba(13, 71, 161, 0.9);
+    transform: scale(1.05);
+}
+
+/* ===== BUTON LOGOUT ===== */
+.logout-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 0, 0, 0.8);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.logout-button:hover {
+    background: rgba(200, 0, 0, 0.9);
+    transform: scale(1.05);
+}
+
+/* ===== CONȚINUT PRINCIPAL ===== */
+.main-content {
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    transition: max-width 0.3s ease, padding 0.3s ease;
+    overflow: visible;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    display: block;
+    margin: 20px auto;
+    box-sizing: border-box;
+}
+
+/* ===== STILURI PENTRU SIMQUERY ===== */
+.simquery {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    overflow: auto;
+}
+
+/* ===== MOD DARK ===== */
+.dark-mode {
+    background-color: #1a202c;
+    color: #a0aec0;
+}
+
+.dark-mode .sidebar {
+    background: rgba(26, 32, 44, 0.9);
+}
+
+.dark-mode .sidebar .user-info {
+    background: rgba(45, 55, 72, 0.95);
+}
+
+.dark-mode .sidebar .profile-view {
+    background: rgba(45, 55, 72, 0.8);
+}
+
+.dark-mode .sidebar .profile-view:hover {
+    background: rgba(45, 55, 72, 0.9);
+}
+
+.dark-mode .main-content {
+    background: rgba(26, 32, 44, 0.7);
+    color: #a0aec0;
+}
+
+.dark-mode h1.title {
+    color: #90cdf4;
+}
+
+.dark-mode .check-button {
+    background-color: #63b3ed;
+}
+
+.dark-mode .check-button:hover {
+    background-color: #4299e1;
+}
+
+.dark-mode .result-item {
+    background: rgba(74, 85, 104, 0.95);
+}
+
+.dark-mode .result-item:hover {
+    background: rgba(45, 55, 72, 0.95);
+}
+
+.dark-mode .results-title {
+    color: #90cdf4;
+}
+
+/* ===== TITLU ===== */
+h1.title {
+    font-size: 2.5rem;
+    color: #1976d2;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* ===== FORMULAR DE INPUT ===== */
+.input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.text-input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #1976d2;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #fff;
+}
+
+.text-input:focus {
+    border-color: #0d47a1;
+    box-shadow: 0 0 5px rgba(13, 71, 161, 0.5);
+    outline: none;
+}
+
+.check-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #1976d2;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    max-width: 150px;
+}
+
+.check-button:hover {
+    background-color: #0d47a1;
+    transform: translateY(-2px);
+}
+
+/* ===== STILURI REZULTATE ===== */
+.results-container {
+    margin-top: 15px;
+    text-align: left;
+    width: 100%;
+}
+
+.results-title {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.results-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.result-item {
+    background: rgba(249, 249, 249, 0.8);
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, background 0.2s, opacity 0.5s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.result-item.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.result-item:hover {
+    transform: scale(1.02);
+    background: rgba(241, 241, 241, 0.8);
+}
+
+/* ===== STILURI STELE ===== */
+.star {
+    color: #ddd;
+    font-size: 1.3rem;
+    margin-right: 3px;
+}
+
+.star.filled {
+    color: #ffcc00;
+}
+
+/* ===== DESIGN RESPONSIV ===== */
+@media (max-width: 768px) {
+    .sidebar.open {
+        width: 250px; /* Ajustat pentru ecrane mici */
+    }
+
+    .sidebar.closed {
+        width: 0;
+        transform: translateX(-100%);
+    }
+
+    .toggle-button {
+        left: 250px; /* Ajustat pentru noua lățime */
+    }
+
+    .sidebar.closed + .toggle-button {
+        left: 10px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .simquery {
+        max-width: 100%;
+    }
+
+    h1.title {
+        font-size: 1.8rem;
+    }
+
+    .check-button {
+        padding: 8px 12px;
+        max-width: 130px;
+    }
+
+    .text-input {
+        max-width: 100%;
+    }
+}
