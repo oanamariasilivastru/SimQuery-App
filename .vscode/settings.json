@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": ".venv/bin/python", // sau ".venv/Scripts/python.exe" pe Windows
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/backend"
+    ]
+}

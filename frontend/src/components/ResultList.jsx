@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ResultItem from './ResultItem';
 
 const ResultList = ({ results }) => {
-  if (!results || results.length === 0) {
+  if (!results || !Array.isArray(results) || results.length === 0) {
     return <p>No results to display.</p>;
   }
 

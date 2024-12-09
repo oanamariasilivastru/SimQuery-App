@@ -1,6 +1,7 @@
+// MainPage.jsx
 import React, { useState, useEffect } from 'react';
 import '../theme/MainPage.css';
-import Sidebar from './Slidebar'; 
+import Sidebar from './Slidebar'; // Corrected import name
 import InputForm from './InputForm';
 import ResultList from './ResultList';
 import ToggleButton from './ToggleButton';
@@ -17,10 +18,12 @@ function MainPage({ setIsAuthenticated }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Toggle dark mode class on body
   useEffect(() => {
     document.body.classList.toggle('dark-mode', isDarkMode);
   }, [isDarkMode]);
 
+  // Load history, results, and dark mode state from localStorage on mount
   useEffect(() => {
     const storedHistory = localStorage.getItem('history');
     const storedResults = localStorage.getItem('results');
@@ -31,22 +34,27 @@ function MainPage({ setIsAuthenticated }) {
     if (storedDarkMode) setIsDarkMode(JSON.parse(storedDarkMode));
   }, []);
 
+  // Save history to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('history', JSON.stringify(history));
   }, [history]);
 
+  // Save results to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('results', JSON.stringify(results));
   }, [results]);
 
+  // Save dark mode state to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 
+  // Handle input text change
   const handleInputChange = (e) => {
     setInputText(e.target.value);
   };
 
+  // Handle similarity check
   const checkSimilarity = async () => {
     if (!inputText.trim()) {
       setError('Textul introdus este gol.');
@@ -77,11 +85,22 @@ function MainPage({ setIsAuthenticated }) {
       }
 
       const data = await response.json();
-      setResults(data);
+
+      // **Key Change:** Extract the 'results' array from the response
+      if (data.results && Array.isArray(data.results)) {
+        setResults(data.results);
+      } else {
+        console.error("Invalid response structure:", data);
+        setError('Structura răspunsului este invalidă.');
+      }
+
+      // Update history with the new query
       setHistory((prevHistory) => [
         { text: inputText, date: new Date().toISOString() },
         ...prevHistory,
       ]);
+
+      // Clear the input field
       setInputText('');
     } catch (error) {
       console.error('Error:', error);
@@ -91,9 +110,13 @@ function MainPage({ setIsAuthenticated }) {
     }
   };
 
+  // Toggle sidebar visibility
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  // Toggle dark mode
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
+  // Handle user logout
   const handleLogout = () => {
     setIsAuthenticated(false);
     navigate('/login');
