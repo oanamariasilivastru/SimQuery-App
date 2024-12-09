@@ -23,6 +23,7 @@ const ResultList = ({ results }) => {
     </div>
   );
 };
+
 ResultList.propTypes = {
   results: PropTypes.arrayOf(
     PropTypes.shape({
