@@ -1,20 +1,16 @@
-# app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import traceback
-import torch
-
-from model.config import GLOVE_PATH, MODEL_PATH, SENTENCES_PATH, MODEL_WEIGHT, COSINE_WEIGHT
-from model.model import load_trained_model
-from model.utils import load_glove_embeddings, load_sentences, preprocess_text, get_base_embedding, cosine_similarity
-
+import numpy as np
+import json
+from ai_model.utils import load_glove_embeddings, get_base_embedding, cosine_similarity
+from ai_model.config import GLOVE_PATH, COSINE_WEIGHT
 app = Flask(__name__)
 CORS(app)
 
 # ================================
-# Load Embeddings
+# Load GloVe Embeddings
 # ================================
-
 try:
     glove_embeddings = load_glove_embeddings(GLOVE_PATH)
     print("GloVe embeddings loaded successfully.")
@@ -24,41 +20,25 @@ except Exception as e:
     raise
 
 # ================================
-# Load Model
+# Load Precomputed Embeddings
 # ================================
-
 try:
-    model = load_trained_model(MODEL_PATH)
-    model.eval()  # Set model to evaluation mode
-    print("Model loaded successfully from:", MODEL_PATH)
-except FileNotFoundError:
-    print(f"Error: Model file not found at path: {MODEL_PATH}")
-    traceback.print_exc()
-    raise
-except Exception as e:
-    print("Error loading model:", e)
-    traceback.print_exc()
-    raise
+    print("Loading precomputed embeddings...")
+    with open("reference_embeddings.json", "r") as f:
+        precomputed_data = json.load(f)
 
-# ================================
-# Load Reference Sentences
-# ================================
+    reference_sentences = [item["sentence"] for item in precomputed_data]
+    reference_embeddings = [np.array(item["embedding"]) for item in precomputed_data]
 
-try:
-    reference_sentences = load_sentences(SENTENCES_PATH)
-    if not reference_sentences:
-        print("Error: No reference sentences loaded. Check sentences.txt file.")
-        raise ValueError("No reference sentences loaded.")
-    print(f"Loaded {len(reference_sentences)} reference sentences.")
+    print(f"Loaded {len(reference_embeddings)} precomputed embeddings.")
 except Exception as e:
-    print("Error loading reference sentences:", e)
+    print("Error loading precomputed embeddings:", e)
     traceback.print_exc()
     raise
 
 # ================================
 # Prediction Route
 # ================================
-
 @app.route("/predict", methods=["POST", "OPTIONS"])
 def predict():
     try:
@@ -66,7 +46,7 @@ def predict():
         if request.method == 'OPTIONS':
             return jsonify({'status': 'OK'}), 200
 
-        print("Received request for prediction.")
+        print("\nReceived request for prediction.")
         data = request.get_json()
         print("Request data:", data)
 
@@ -75,37 +55,25 @@ def predict():
             print("Error: Input text is empty.")
             return jsonify({"error": "Textul introdus este gol."}), 400
 
-        # Preprocess input text
-        input_tensor = preprocess_text(input_text, glove_embeddings)
+        print(f"Preprocessing input text: {input_text}")
         input_emb = get_base_embedding(input_text, glove_embeddings)
+        print(f"Input text embedding calculated.")
 
+        # Compute similarities
         similarities = []
-        for ref_sentence in reference_sentences:
-            ref_tensor = preprocess_text(ref_sentence, glove_embeddings)
-            ref_emb = get_base_embedding(ref_sentence, glove_embeddings)
-
-            combined_input = input_tensor - ref_tensor
-
-            with torch.no_grad():
-                raw_score = model(combined_input).item()
-                model_score = raw_score * 5  # Assuming scaling factor
-
+        print("Comparing input with precomputed embeddings...")
+        for sentence, ref_emb in zip(reference_sentences, reference_embeddings):
             cos_sim = cosine_similarity(input_emb, ref_emb)
-            final_score = MODEL_WEIGHT * model_score + COSINE_WEIGHT * (cos_sim * 5)  # Assuming scaling factor
-
-            similarities.append((ref_sentence, final_score))
+            final_score = COSINE_WEIGHT * (cos_sim * 5)  # Scale cosine similarity
+            similarities.append((sentence, final_score))
 
         # Get top 5 similar sentences
+        print("Selecting top 5 similar sentences...")
         top_5 = sorted(similarities, key=lambda x: x[1], reverse=True)[:5]
-        print("Top 5 similar sentences:", top_5)
-
-        # Convert similarity scores to native Python floats
         top_5_dict = [{"sentence": s, "score": float(sc)} for s, sc in top_5]
+        print("Top 5 similar sentences:", top_5_dict)
 
-        # Option A: Return the array directly
-        # return jsonify(top_5_dict), 200
-
-        # Option B: Wrap the array with a key (e.g., "results")
+        # Return the results as JSON
         return jsonify({"results": top_5_dict}), 200
 
     except Exception as e:
@@ -116,7 +84,6 @@ def predict():
 # ================================
 # Run Flask App
 # ================================
-
-if __name__ == "__main__"
+if __name__ == "__main__":
     print("Starting Flask server...")
     app.run(debug=True, use_reloader=False)
