@@ -24,7 +24,7 @@ except Exception as e:
 # ================================
 try:
     print("Loading precomputed embeddings...")
-    with open("reference_embeddings.json", "r") as f:
+    with open("C:/facultate an 3/data/reference_embeddings.json", "r") as f:
         precomputed_data = json.load(f)
 
     reference_sentences = [item["sentence"] for item in precomputed_data]
@@ -57,14 +57,15 @@ def predict():
 
         print(f"Preprocessing input text: {input_text}")
         input_emb = get_base_embedding(input_text, glove_embeddings)
-        print(f"Input text embedding calculated.")
+        print("Input text embedding calculated.")
 
         # Compute similarities
         similarities = []
         print("Comparing input with precomputed embeddings...")
         for sentence, ref_emb in zip(reference_sentences, reference_embeddings):
             cos_sim = cosine_similarity(input_emb, ref_emb)
-            final_score = COSINE_WEIGHT * (cos_sim * 5)  # Scale cosine similarity
+            # Scale the cosine similarity to a range of 1 to 5
+            final_score = 1 + (cos_sim + 1) * 2  # Maps -1 -> 1 and +1 -> 5
             similarities.append((sentence, final_score))
 
         # Get top 5 similar sentences

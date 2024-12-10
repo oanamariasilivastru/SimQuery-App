@@ -2,7 +2,7 @@ import spacy
 import numpy as np
 import traceback
 import torch
-from model.config import GLOVE_PATH, EMBEDDING_DIM, INPUT_DIM, MODEL_PATH, SENTENCES_PATH
+from ai_model.config import GLOVE_PATH, EMBEDDING_DIM, INPUT_DIM, MODEL_PATH, SENTENCES_PATH
 
 try:
     nlp = spacy.load("en_core_web_sm")

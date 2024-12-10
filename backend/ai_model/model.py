@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from model.config import INPUT_DIM
+from ai_model.config import INPUT_DIM
 
 class MyModel(nn.Module):
     def __init__(self):
