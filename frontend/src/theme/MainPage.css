@@ -455,3 +455,35 @@ h1.title {
         max-width: 100%;
     }
 }
+
+.sentence-body {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.sentence-body.collapsed {
+    -webkit-line-clamp: 3;
+}
+
+.sentence-body.expanded {
+    -webkit-line-clamp: unset; /* Remove line clamp */
+}
+
+.history-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+}
+
+  .history-text strong {
+    flex-shrink: 0; /* Prevent the title from shrinking */
+    margin-right: 5px;
+}
+
+  .history-body {
+    flex: 1; /* Allow the body to take up remaining space */
+}

@@ -6,7 +6,7 @@ import { FiUser, FiEye } from 'react-icons/fi';
 const Sidebar = ({ isOpen, user, history }) => {
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-      {/* Secțiunea cu informațiile utilizatorului */}
+      {/* User Information Section */}
       <div className="user-info">
         <div className="avatar">
           <FiUser size={36} />
@@ -14,13 +14,13 @@ const Sidebar = ({ isOpen, user, history }) => {
         <div className="user-name">{user.name}</div>
       </div>
 
-      {/* Vizualizare Profil */}
+      {/* View Profile */}
       <div className="profile-view">
         <FiEye size={20} />
         <span>Vizualizare Profil</span>
       </div>
 
-      {/* Istoricul căutărilor */}
+      {/* Search History */}
       <div className="history">
         <h2>Istoricul Căutărilor</h2>
         {history.length === 0 ? (

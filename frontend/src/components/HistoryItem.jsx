@@ -13,9 +13,27 @@ const HistoryItem = ({ text, date }) => {
     formattedDate = 'Data invalidă';
   }
 
+  // Split the text into title and body at the first hyphen
+  const hyphenIndex = text.indexOf('-');
+  let title = '';
+  let body = '';
+
+  if (hyphenIndex !== -1) {
+    title = text.substring(0, hyphenIndex).trim();
+    body = text.substring(hyphenIndex + 1).trim();
+  } else {
+    // If no hyphen, treat the entire text as body
+    body = text;
+  }
+
   return (
     <div className="history-item">
-      <p className="history-text">{text}</p>
+      <p className="history-text">
+        {title && <strong>{title} - </strong>}
+        <span className="history-body">
+          {body}
+        </span>
+      </p>
       <div className="history-date">
         <FiClock className="mr-1" />
         <span>{formattedDate}</span>

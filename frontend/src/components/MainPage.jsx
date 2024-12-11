@@ -1,7 +1,7 @@
 // MainPage.jsx
 import React, { useState, useEffect } from 'react';
 import '../theme/MainPage.css';
-import Sidebar from './Slidebar'; // Corrected import name
+import Sidebar from './Slidebar';
 import InputForm from './InputForm';
 import ResultList from './ResultList';
 import ToggleButton from './ToggleButton';
@@ -100,8 +100,8 @@ function MainPage({ setIsAuthenticated }) {
         ...prevHistory,
       ]);
 
-      // Clear the input field
-      setInputText('');
+      // **Removed** the line that clears the input field
+      // setInputText('');
     } catch (error) {
       console.error('Error:', error);
       setError(error.message);
@@ -156,11 +156,6 @@ function MainPage({ setIsAuthenticated }) {
         {error && <p className="error-message">{error}</p>}
 
         <ResultList results={results} />
-
-        <div className="debug-results">
-          <h2>Debugging Results:</h2>
-          <pre>{JSON.stringify(results, null, 2)}</pre>
-        </div>
       </div>
     </div>
   );

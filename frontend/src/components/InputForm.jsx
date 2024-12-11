@@ -1,3 +1,4 @@
+// src/components/InputForm.jsx
 import React from 'react';
 
 const InputForm = ({ inputText, handleInputChange, checkSimilarity }) => {
