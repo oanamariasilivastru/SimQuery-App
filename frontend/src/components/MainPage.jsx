@@ -1,7 +1,7 @@
 // MainPage.jsx
 import React, { useState, useEffect } from 'react';
 import '../theme/MainPage.css';
-import Sidebar from './Slidebar';
+import Sidebar from './Slidebar'; // Asigurați-vă că numele este corect
 import InputForm from './InputForm';
 import ResultList from './ResultList';
 import ToggleButton from './ToggleButton';
@@ -86,21 +86,21 @@ function MainPage({ setIsAuthenticated }) {
 
       const data = await response.json();
 
-      // **Key Change:** Extract the 'results' array from the response
+      // Extrage array-ul 'results' din răspuns
       if (data.results && Array.isArray(data.results)) {
         setResults(data.results);
       } else {
-        console.error("Invalid response structure:", data);
+        console.error("Structura răspunsului este invalidă:", data);
         setError('Structura răspunsului este invalidă.');
       }
 
-      // Update history with the new query
+      // Actualizează istoricul cu noua căutare și rezultatele asociate
       setHistory((prevHistory) => [
-        { text: inputText, date: new Date().toISOString() },
+        { text: inputText, date: new Date().toISOString(), results: data.results },
         ...prevHistory,
       ]);
 
-      // **Removed** the line that clears the input field
+      // **Opțional:** Păstrează textul inputului după trimitere
       // setInputText('');
     } catch (error) {
       console.error('Error:', error);
@@ -122,9 +122,20 @@ function MainPage({ setIsAuthenticated }) {
     navigate('/login');
   };
 
+  // Handler pentru selectarea unui element din istoric
+  const handleHistoryItemClick = (historyItem) => {
+    setInputText(historyItem.text);
+    setResults(historyItem.results);
+  };
+
   return (
     <div className="app-container">
-      <Sidebar isOpen={sidebarOpen} history={history} user={{ name: 'Utilizator Test' }} />
+      <Sidebar
+        isOpen={sidebarOpen}
+        history={history}
+        user={{ name: 'Utilizator Test' }}
+        onHistoryItemClick={handleHistoryItemClick} // Transmite handler-ul
+      />
       <ToggleButton isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       <button
@@ -135,11 +146,7 @@ function MainPage({ setIsAuthenticated }) {
         {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
       </button>
 
-      <button
-        onClick={handleLogout}
-        className="logout-button"
-        aria-label="Logout"
-      >
+      <button onClick={handleLogout} className="logout-button" aria-label="Logout">
         <FiLogOut size={20} />
       </button>
 
@@ -156,6 +163,7 @@ function MainPage({ setIsAuthenticated }) {
         {error && <p className="error-message">{error}</p>}
 
         <ResultList results={results} />
+
       </div>
     </div>
   );

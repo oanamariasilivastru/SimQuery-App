@@ -1,5 +1,6 @@
-// src/components/InputForm.jsx
+// InputForm.jsx
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const InputForm = ({ inputText, handleInputChange, checkSimilarity }) => {
   const handleSubmit = (e) => {
@@ -22,6 +23,12 @@ const InputForm = ({ inputText, handleInputChange, checkSimilarity }) => {
       </button>
     </form>
   );
+};
+
+InputForm.propTypes = {
+  inputText: PropTypes.string.isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+  checkSimilarity: PropTypes.func.isRequired,
 };
 
 export default InputForm;

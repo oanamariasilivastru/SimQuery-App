@@ -1,5 +1,6 @@
-// src/components/Stars.jsx
+// Stars.jsx
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Stars = ({ score }) => {
   return (
@@ -11,6 +12,10 @@ const Stars = ({ score }) => {
       ))}
     </div>
   );
+};
+
+Stars.propTypes = {
+  score: PropTypes.number.isRequired,
 };
 
 export default Stars;

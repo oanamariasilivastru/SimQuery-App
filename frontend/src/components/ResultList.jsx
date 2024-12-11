@@ -1,3 +1,4 @@
+// ResultList.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import ResultItem from './ResultItem';
@@ -9,7 +10,7 @@ const ResultList = ({ results }) => {
 
   return (
     <div className="results-container">
-      <h2 className="results-title">Top 5 Similar Sentences:</h2>
+      <h2 className="results-title">Top 5 Texte Similare:</h2>
       <ul className="results-list">
         {results.map((item, index) => (
           <ResultItem
