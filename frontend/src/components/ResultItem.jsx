@@ -45,7 +45,7 @@ const ResultItem = ({ sentence, score, index }) => {
       </div>
       {body.length > 100 && (
         <button className="see-more-button" onClick={toggleExpand}>
-          {isExpanded ? 'See Less' : 'See More'}
+          {isExpanded ? 'Vezi mai mult' : 'Vezi mai puțin'}
         </button>
       )}
       <div className="flex items-center text-gray-400 text-sm mt-1">
