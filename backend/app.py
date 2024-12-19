@@ -3,10 +3,15 @@ from flask_cors import CORS
 import traceback
 import numpy as np
 import json
+from datetime import timedelta
 from ai_model.utils import load_glove_embeddings, get_base_embedding, cosine_similarity
 from ai_model.config import GLOVE_PATH, COSINE_WEIGHT
+from repos.utils.database import get_db_connection
+from repos.utils.auth import hash_password, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+
+
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["http://localhost:5173"])
 
 # ================================
 # Load GloVe Embeddings
@@ -37,7 +42,72 @@ except Exception as e:
     raise
 
 # ================================
-# Prediction Route
+# REGISTER ROUTE
+# ================================
+@app.route("/register", methods=["POST"])
+def register_user():
+    try:
+        data = request.get_json()
+        username = data.get("username", "").strip()
+        email = data.get("email", "").strip()
+        password = data.get("password", "").strip()
+
+        if not username or not email or not password:
+            return jsonify({"error": "Username, email și password sunt obligatorii."}), 400
+
+        conn = get_db_connection()
+        user_exists = conn.execute("SELECT * FROM users WHERE username = ? OR email = ?", (username, email)).fetchone()
+        if user_exists:
+            conn.close()
+            return jsonify({"error": "Username sau email deja înregistrat."}), 400
+
+        hashed = hash_password(password)
+        conn.execute("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", (username, email, hashed))
+        conn.commit()
+        conn.close()
+
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(data={"sub": username}, expires_delta=access_token_expires)
+        return jsonify({"access_token": access_token, "token_type": "bearer"}), 200
+
+    except Exception as e:
+        print("Error during user registration:", e)
+        traceback.print_exc()
+        return jsonify({"error": "An error occurred during registration."}), 500
+
+# ================================
+# LOGIN ROUTE
+# ================================
+@app.route("/login", methods=["POST"])
+def login_user():
+    try:
+        data = request.get_json()
+        username = data.get("username", "").strip()
+        password = data.get("password", "").strip()
+
+        if not username or not password:
+            return jsonify({"error": "Username și password sunt obligatorii."}), 400
+
+        conn = get_db_connection()
+        db_user = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+        conn.close()
+        if not db_user:
+            return jsonify({"error": "Username sau password invalide."}), 401
+
+        if not verify_password(password, db_user["password_hash"]):
+            return jsonify({"error": "Username sau password invalide."}), 401
+
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(data={"sub": db_user["username"]}, expires_delta=access_token_expires)
+        return jsonify({"access_token": access_token, "token_type": "bearer"}), 200
+
+    except Exception as e:
+        print("Error during login:", e)
+        traceback.print_exc()
+        return jsonify({"error": "An error occurred during login."}), 500
+
+# ================================
+# PREDICT ROUTE
 # ================================
 @app.route("/predict", methods=["POST", "OPTIONS"])
 def predict():

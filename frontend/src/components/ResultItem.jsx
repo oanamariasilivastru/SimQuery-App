@@ -45,11 +45,11 @@ const ResultItem = ({ sentence, score, index }) => {
       </div>
       {body.length > 100 && (
         <button className="see-more-button" onClick={toggleExpand}>
-          {isExpanded ? 'Vezi mai mult' : 'Vezi mai puțin'}
+          {isExpanded ? 'Vezi mai puțin': 'Vezi mai mult'}
         </button>
       )}
       <div className="flex items-center text-gray-400 text-sm mt-1">
-        <span className="mr-2">Score:</span>
+        <span className="mr-2">Scor:</span>
         <Stars score={score} />
       </div>
     </li>

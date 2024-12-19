@@ -1,33 +1,35 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "../theme/FormContainer.css";
+import '../theme/FormContainer.css';
 
-const FormContainer = () => {
+const SignUpContainer = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     const username = document.querySelector('input[placeholder="Username"]').value;
+    const email = document.querySelector('input[placeholder="Email"]').value;
     const password = document.querySelector('input[placeholder="Password"]').value;
 
-    const response = await fetch("http://localhost:5000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password })
-    });
+    try {
+      const response = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password })
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("token", data.access_token);
-      navigate("/main");
-    } else {
-      const errorData = await response.json();
-      alert(errorData.detail || errorData.error || "Login failed");
+      if (response.ok) {
+        // După înregistrare cu succes, navigăm la pagina de login
+        navigate("/");
+        alert("Registration successful! Please log in now.");
+      } else {
+        const errorData = await response.json();
+        alert(errorData.detail || errorData.error || "Registration failed");
+      }
+    } catch (error) {
+      console.error("Error during sign up:", error);
+      alert("An error occurred during registration.");
     }
-  };
-
-  const handleSignUp = () => {
-    navigate("/signup");
   };
 
   return (
@@ -41,13 +43,12 @@ const FormContainer = () => {
           <img src="src/assets/rocket.png" className="form-image rocket" alt="Rocket" />
           <img src="src/assets/cloud.png" className="form-image cloud" alt="Cloud" />
         </div>
-        <p className="featured-words">You Are Few Minutes Away to Boost Your Skills</p>
+        <p className="featured-words">Join Us to Unlock Your Full Potential!</p>
       </div>
       <div className="col col-2">
         <div className="btn-box">
           <button
             className={`btn btn-1 ${location.pathname === "/" ? "active" : ""}`}
-            id="login"
             onClick={() => navigate("/")}
           >
             Sign In
@@ -63,7 +64,7 @@ const FormContainer = () => {
 
         <div className="login-form">
           <div className="form-title">
-            <span>Sign In</span>
+            <span>Sign Up</span>
           </div>
         </div>
         <div className="form-inputs">
@@ -72,15 +73,16 @@ const FormContainer = () => {
             <i className="bx bx-user icon"></i>
           </div>
           <div className="input-box">
+            <input type="email" className="input-field" placeholder="Email" required />
+            <i className="bx bx-envelope icon"></i>
+          </div>
+          <div className="input-box">
             <input type="password" className="input-field" placeholder="Password" required />
             <i className="bx bx-lock-alt icon"></i>
           </div>
-          <div className="forgot-pass">
-            <a href="#">Forgot Password?</a>
-          </div>
           <div className="input-box">
-            <button className="input-submit" onClick={handleLogin}>
-              <span>Sign In</span>
+            <button className="input-submit" onClick={handleSignUp}>
+              <span>Sign Up</span>
               <i className="bx bx-right-arrow-alt"></i>
             </button>
           </div>
@@ -90,4 +92,4 @@ const FormContainer = () => {
   );
 };
 
-export default FormContainer;
+export default SignUpContainer;
