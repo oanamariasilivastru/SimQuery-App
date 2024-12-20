@@ -13,6 +13,32 @@ A lightweight Flask web application for user authentication, text similarity pre
 
 ---
 
+## Demo 🎥
+
+Explore the application through the following pages:
+
+### 🔐 Login/Signup Page
+Allows users to register and authenticate securely using JWT.
+
+![Login_Page](loginpage.png)
+![Signup Page](signuppage.png)
+
+---
+
+### 🏠 Main Page
+The main interface where users can input text and receive similarity predictions.
+
+![Main Page](mainpage.png)
+
+---
+
+### 👤 Profile Page
+View your saved search history and manage your account.
+
+![Profile Page](profile.png)
+
+---
+
 ## Technologies Used ⚙️
 
 - **Backend**: Flask, Python  
