@@ -1,0 +1,130 @@
+/* ===== PROFIL MODAL ===== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  
+  .modal-content {
+    background: #fff; /* Fundal alb */
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    color: #000; /* Text negru */
+  }
+  
+  .modal-content h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #1976d2; /* Păstrat culoarea albastră pentru titlu */
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .profile-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-image-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 2px solid #1976d2; /* Border albastru pentru imaginea de profil */
+  }
+  
+  .profile-image-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(200,200,200,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555; /* Text gri închis pentru placeholder */
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    border: 2px dashed #1976d2; /* Border albastru pentru placeholder */
+  }
+  
+  .profile-fields label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    color: #000; /* Text negru pentru etichete */
+    margin-bottom: 8px;
+  }
+  
+  .profile-fields input,
+  .profile-fields select {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #1976d2; /* Border albastru pentru inputuri */
+    margin-top: 5px;
+    font-size: 0.9rem;
+    background: #fff; /* Fundal alb pentru inputuri */
+    color: #000; /* Text negru în inputuri */
+  }
+  
+  .profile-fields input::placeholder,
+  .profile-fields select::placeholder {
+    color: #888; /* Placeholder gri pentru vizibilitate */
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .modal-save-btn,
+  .modal-cancel-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #fff; /* Text alb pentru butoane */
+  }
+  
+  .modal-save-btn {
+    background: #1976d2;
+    transition: background 0.3s ease;
+  }
+  
+  .modal-save-btn:hover {
+    background: #0d47a1;
+    transform: translateY(-2px);
+  }
+  
+  .modal-cancel-btn {
+    background: #aaa;
+    transition: background 0.3s ease;
+  }
+  
+  .modal-cancel-btn:hover {
+    background: #888;
+    transform: translateY(-2px);
+  }

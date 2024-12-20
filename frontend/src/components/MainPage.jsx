@@ -1,12 +1,13 @@
 // MainPage.jsx
 import React, { useState, useEffect } from 'react';
 import '../theme/MainPage.css';
-import Sidebar from './Slidebar';
+import Sidebar from './Sidebar'; // Asigură-te că calea este corectă
 import InputForm from './InputForm';
 import ResultList from './ResultList';
 import ToggleButton from './ToggleButton';
 import { FiSun, FiMoon, FiLogOut } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import ProfileModal from './ProfileModal';
 
 function MainPage({ setIsAuthenticated }) {
   const [inputText, setInputText] = useState('');
@@ -22,13 +23,21 @@ function MainPage({ setIsAuthenticated }) {
   const token = localStorage.getItem('token');
   console.log("Token from localStorage:", token);
 
+  // Stări pentru modal profil
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [profileData, setProfileData] = useState({
+    name: 'NumeExistent',
+    surname: 'PrenumeExistent',
+    role: 'jurnalist',
+    image: null,
+  });
+
   // Verifică prezența token-ului la montarea componentei și preia istoricul
   useEffect(() => {
     if (!token) {
       console.log("No token found, redirecting to login.");
       navigate('/'); // Redirecționează la pagina de login
     } else {
-      // Fetch history from backend
       fetchHistory();
     }
   }, [token, navigate]);
@@ -215,13 +224,28 @@ function MainPage({ setIsAuthenticated }) {
     setResults(historyItem.results);
   };
 
+  // Deschide modalul de profil
+  const handleProfileClick = () => {
+    console.log("Profile button clicked."); // Debugging
+    setProfileModalOpen(true);
+  };
+
+  // Salvează profilul actualizat
+  const handleProfileSave = (updatedProfile) => {
+    console.log("Profil actualizat:", updatedProfile);
+    setProfileData(updatedProfile);
+    // Opțional: Trimite actualizările la backend
+    // Implementați un endpoint pentru actualizarea profilului și apelați-l aici
+  };
+
   return (
     <div className="app-container">
       <Sidebar
         isOpen={sidebarOpen}
         history={history}
-        user={{ name: 'Utilizator Test' }}
+        user={{ name: `${profileData.name} ${profileData.surname}`, avatar: profileData.image }}
         onHistoryItemClick={handleHistoryItemClick}
+        onProfileClick={handleProfileClick} // Adaugă prop-ul
       />
       <ToggleButton isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
@@ -239,18 +263,22 @@ function MainPage({ setIsAuthenticated }) {
 
       <div className="main-content">
         <h1 className="title">SimQuery</h1>
-
         <InputForm
           inputText={inputText}
           handleInputChange={handleInputChange}
           checkSimilarity={checkSimilarity}
         />
-
         {loading && <p>Se încarcă...</p>}
         {error && <p className="error-message">{error}</p>}
-
         <ResultList results={results} />
       </div>
+
+      <ProfileModal
+        isOpen={profileModalOpen}
+        onClose={() => setProfileModalOpen(false)}
+        onSave={handleProfileSave}
+        initialProfile={profileData}
+      />
     </div>
   );
 }

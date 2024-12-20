@@ -3,6 +3,7 @@ import React from 'react';
 import HistoryItem from './HistoryItem';
 import { FiUser, FiEye } from 'react-icons/fi';
 import PropTypes from 'prop-types';
+import '../theme/Sidebar.css';
 
 const Sidebar = ({ isOpen, user, history, onHistoryItemClick, onProfileClick }) => {
   return (
@@ -13,7 +14,7 @@ const Sidebar = ({ isOpen, user, history, onHistoryItemClick, onProfileClick }) 
           {user.avatar ? (
             <img src={user.avatar} alt="User Avatar" className="avatar-image" />
           ) : (
-            <FiUser size={36} />
+            <FiUser className="avatar-icon" />
           )}
         </div>
         <div className="user-name">{user.name}</div>
