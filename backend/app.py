@@ -7,11 +7,130 @@ from datetime import timedelta
 from ai_model.utils import load_glove_embeddings, get_base_embedding, cosine_similarity
 from ai_model.config import GLOVE_PATH, COSINE_WEIGHT
 from repos.utils.database import get_db_connection
-from repos.utils.auth import hash_password, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from repos.utils.auth import hash_password, verify_password, create_access_token, verify_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173"])
+
+@app.route("/save_history", methods=["POST"])
+def save_history():
+    try:
+        # Obține token-ul din antetul Authorization
+        auth_header = request.headers.get('Authorization', None)
+        if not auth_header:
+            return jsonify({"error": "Missing Authorization Header"}), 401
+
+        parts = auth_header.split()
+
+        if parts[0].lower() != 'bearer':
+            return jsonify({"error": "Invalid token type"}), 401
+        elif len(parts) == 1:
+            return jsonify({"error": "Token not found"}), 401
+        elif len(parts) > 2:
+            return jsonify({"error": "Authorization header must be Bearer token"}), 401
+
+        token = parts[1]
+
+        # Verifică validitatea token-ului
+        try:
+            user_data = verify_access_token(token)
+            username = user_data['username']
+        except Exception as e:
+            return jsonify({"error": "Invalid token"}), 401
+
+        # Obține ID-ul utilizatorului
+        conn = get_db_connection()
+        user = conn.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()
+        if not user:
+            conn.close()
+            return jsonify({"error": "User not found"}), 404
+        user_id = user['id']
+
+        # Obține datele din cerere
+        data = request.get_json()
+        text = data.get("text", "").strip()
+        date = data.get("date", "").strip()
+        results = data.get("results", [])
+
+        if not text or not date or not results:
+            conn.close()
+            return jsonify({"error": "Missing data fields"}), 400
+
+        # Converteste rezultatele în string JSON
+        results_json = json.dumps(results)
+
+        # Inserează în tabela history
+        conn.execute(
+            "INSERT INTO history (user_id, text, date, results) VALUES (?, ?, ?, ?)",
+            (user_id, text, date, results_json)
+        )
+        conn.commit()
+        conn.close()
+
+        return jsonify({"message": "History saved successfully"}), 200
+
+    except Exception as e:
+        print("Error saving history:", e)
+        traceback.print_exc()
+        return jsonify({"error": "An error occurred while saving history."}), 500
+
+
+@app.route("/history", methods=["GET"])
+def get_history():
+    try:
+        # Obține token-ul din antetul Authorization
+        auth_header = request.headers.get('Authorization', None)
+        if not auth_header:
+            return jsonify({"error": "Missing Authorization Header"}), 401
+
+        parts = auth_header.split()
+
+        if parts[0].lower() != 'bearer':
+            return jsonify({"error": "Invalid token type"}), 401
+        elif len(parts) == 1:
+            return jsonify({"error": "Token not found"}), 401
+        elif len(parts) > 2:
+            return jsonify({"error": "Authorization header must be Bearer token"}), 401
+
+        token = parts[1]
+
+        # Verifică validitatea token-ului
+        try:
+            user_data = verify_access_token(token)
+            username = user_data['username']
+        except Exception as e:
+            return jsonify({"error": "Invalid token"}), 401
+
+        # Obține ID-ul utilizatorului
+        conn = get_db_connection()
+        user = conn.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()
+        if not user:
+            conn.close()
+            return jsonify({"error": "User not found"}), 404
+        user_id = user['id']
+
+        # Obține istoricul utilizatorului
+        history_rows = conn.execute(
+            "SELECT text, date, results FROM history WHERE user_id = ? ORDER BY date DESC",
+            (user_id,)
+        ).fetchall()
+        conn.close()
+
+        history = []
+        for row in history_rows:
+            history.append({
+                "text": row["text"],
+                "date": row["date"],
+                "results": json.loads(row["results"])
+            })
+
+        return jsonify({"history": history}), 200
+
+    except Exception as e:
+        print("Error fetching history:", e)
+        traceback.print_exc()
+        return jsonify({"error": "An error occurred while fetching history."}), 500
 
 # ================================
 # Load GloVe Embeddings

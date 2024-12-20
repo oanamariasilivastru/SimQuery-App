@@ -15,6 +15,18 @@ def init_db():
             password_hash TEXT NOT NULL
         );
     ''')
+
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            text TEXT NOT NULL,
+            date TEXT NOT NULL,
+            results TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users (id)
+        );
+    ''')
+    
     conn.commit()
     conn.close()
 

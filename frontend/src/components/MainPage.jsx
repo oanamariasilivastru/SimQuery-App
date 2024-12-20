@@ -1,7 +1,7 @@
 // MainPage.jsx
 import React, { useState, useEffect } from 'react';
 import '../theme/MainPage.css';
-import Sidebar from './Slidebar'; // Asigurați-vă că numele este corect
+import Sidebar from './Slidebar';
 import InputForm from './InputForm';
 import ResultList from './ResultList';
 import ToggleButton from './ToggleButton';
@@ -18,31 +18,31 @@ function MainPage({ setIsAuthenticated }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Preia token-ul din localStorage
+  const token = localStorage.getItem('token');
+  console.log("Token from localStorage:", token);
+
+  // Verifică prezența token-ului la montarea componentei și preia istoricul
+  useEffect(() => {
+    if (!token) {
+      console.log("No token found, redirecting to login.");
+      navigate('/'); // Redirecționează la pagina de login
+    } else {
+      // Fetch history from backend
+      fetchHistory();
+    }
+  }, [token, navigate]);
+
   // Toggle dark mode class on body
   useEffect(() => {
     document.body.classList.toggle('dark-mode', isDarkMode);
   }, [isDarkMode]);
 
-  // Load history, results, and dark mode state from localStorage on mount
+  // Load dark mode state from localStorage on mount
   useEffect(() => {
-    const storedHistory = localStorage.getItem('history');
-    const storedResults = localStorage.getItem('results');
     const storedDarkMode = localStorage.getItem('isDarkMode');
-
-    if (storedHistory) setHistory(JSON.parse(storedHistory));
-    if (storedResults) setResults(JSON.parse(storedResults));
     if (storedDarkMode) setIsDarkMode(JSON.parse(storedDarkMode));
   }, []);
-
-  // Save history to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('history', JSON.stringify(history));
-  }, [history]);
-
-  // Save results to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('results', JSON.stringify(results));
-  }, [results]);
 
   // Save dark mode state to localStorage whenever it changes
   useEffect(() => {
@@ -52,6 +52,45 @@ function MainPage({ setIsAuthenticated }) {
   // Handle input text change
   const handleInputChange = (e) => {
     setInputText(e.target.value);
+  };
+
+  // Funcție generică pentru a trata răspunsurile 401 (token invalid)
+  const handleUnauthorized = () => {
+    console.error('Invalid or expired token. Logging out.');
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    navigate('/');
+  };
+
+  // Fetch history from backend
+  const fetchHistory = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/history', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setHistory(data.history);
+      } else {
+        if (response.status === 401) {
+          // Token invalid sau expirat
+          handleUnauthorized();
+          return;
+        }
+
+        const errorData = await response.json();
+        console.error('Failed to fetch history:', errorData.error || 'Unknown error');
+        setError(errorData.error || 'Failed to fetch history');
+      }
+    } catch (error) {
+      console.error('Error fetching history:', error);
+      setError('Error fetching history');
+    }
   };
 
   // Handle similarity check
@@ -69,11 +108,16 @@ function MainPage({ setIsAuthenticated }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ text: inputText }),
       });
 
       if (!response.ok) {
+        if (response.status === 401) {
+          handleUnauthorized();
+          return;
+        }
         let errorMessage = 'Eroare la predicție';
         try {
           const errorData = await response.json();
@@ -94,14 +138,22 @@ function MainPage({ setIsAuthenticated }) {
         setError('Structura răspunsului este invalidă.');
       }
 
+      // Creează un nou istoric
+      const newHistoryItem = {
+        text: inputText,
+        date: new Date().toISOString(),
+        results: data.results,
+      };
+
       // Actualizează istoricul cu noua căutare și rezultatele asociate
       setHistory((prevHistory) => [
-        { text: inputText, date: new Date().toISOString(), results: data.results },
+        newHistoryItem,
         ...prevHistory,
       ]);
 
-      // **Opțional:** Păstrează textul inputului după trimitere
-      // setInputText('');
+      // Trimite noul istoric la backend
+      await saveHistory(newHistoryItem);
+
     } catch (error) {
       console.error('Error:', error);
       setError(error.message);
@@ -110,16 +162,51 @@ function MainPage({ setIsAuthenticated }) {
     }
   };
 
+  // Save history to backend
+  const saveHistory = async (historyItem) => {
+    try {
+      const response = await fetch('http://localhost:5000/save_history', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(historyItem),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleUnauthorized();
+          return;
+        }
+
+        const errorData = await response.json();
+        console.error('Failed to save history:', errorData.error || 'Unknown error');
+        setError(errorData.error || 'Failed to save history');
+      } else {
+        const data = await response.json();
+        console.log('History saved:', data.message);
+      }
+    } catch (error) {
+      console.error('Error saving history:', error);
+      setError('Error saving history');
+    }
+  };
+
   // Toggle sidebar visibility
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   // Toggle dark mode
-  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   // Handle user logout
   const handleLogout = () => {
+    // Elimină token-ul din localStorage
+    localStorage.removeItem('token');
     setIsAuthenticated(false);
-    navigate('/login');
+    navigate('/');
   };
 
   // Handler pentru selectarea unui element din istoric
@@ -134,7 +221,7 @@ function MainPage({ setIsAuthenticated }) {
         isOpen={sidebarOpen}
         history={history}
         user={{ name: 'Utilizator Test' }}
-        onHistoryItemClick={handleHistoryItemClick} // Transmite handler-ul
+        onHistoryItemClick={handleHistoryItemClick}
       />
       <ToggleButton isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
@@ -163,7 +250,6 @@ function MainPage({ setIsAuthenticated }) {
         {error && <p className="error-message">{error}</p>}
 
         <ResultList results={results} />
-
       </div>
     </div>
   );
