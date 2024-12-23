@@ -1,0 +1,116 @@
+/* ===== STILURI PENTRU COMPONENTA SimilarContradictingList ===== */
+
+.similar-contradicting-list {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    margin-top: 20px;
+}
+
+.prompt-section {
+    margin-bottom: 40px;
+}
+
+.prompt-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #1976d2;
+    font-weight: 700;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.columns-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.similar-column, .contradicting-column {
+    background-color: rgba(249, 249, 249, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.column h3 {
+    margin-bottom: 15px;
+    color: #333333;
+    border-bottom: 2px solid #dddddd;
+    padding-bottom: 5px;
+}
+
+.sentence-item {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.source-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555555;
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+.score {
+    font-size: 0.9em;
+    color: #888888;
+    margin-top: 5px;
+}
+
+.stars {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.star {
+    color: #ddd;
+    font-size: 1.2rem;
+    margin-left: 2px;
+}
+
+.star.filled {
+    color: #ffcc00;
+}
+
+/* ===== BUTON SEE MORE ===== */
+.see-more-button {
+    background-color: transparent;
+    border: none;
+    color: #1976d2;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.see-more-button:hover {
+    color: #0d47a1;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .columns-container {
+        flex-direction: column;
+    }
+
+    .prompt-title {
+        font-size: 1.5rem;
+    }
+
+    .column h3 {
+        font-size: 1.1rem;
+    }
+}
