@@ -1,14 +1,15 @@
-/* src/theme/AddDocumentPage.css */
+/* ===== AddDocumentPage Styles ===== */
 
 /* ===== CONTAINER PRINCIPAL ===== */
 .add-document-container {
   max-width: 600px;
   margin: 50px auto;
-  padding: 20px;
+  padding: 30px 25px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8); /* Se potrivește cu simquery */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
 }
 
 /* ===== BUTON DE ÎNAPOI ===== */
@@ -26,6 +27,15 @@
 
 .back-button:hover {
   color: #007BFF;
+}
+
+/* ===== TITLU ===== */
+.add-document-container h2 {
+  font-size: 2rem;
+  color: #1976d2;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 600;
 }
 
 /* ===== FORMULAR DE ÎNCĂRCARE DOCUMENT ===== */
@@ -51,6 +61,9 @@
   border-radius: 4px;
   cursor: pointer;
   transition: border-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: #fff;
 }
 
 .form-group input[type="file"]:focus {
@@ -64,7 +77,7 @@
   background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px; /* Consistent cu alte elemente */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -95,6 +108,72 @@
   margin-top: 20px;
 }
 
+/* ===== SCOR DE ÎNCREDERE ===== */
+.confidence-score {
+  margin-top: 30px;
+}
+
+.confidence-score h3 {
+  font-size: 1.2rem;
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+.score-display {
+  display: flex;
+  align-items: center;
+}
+
+.score-display .star {
+  color: #ddd;
+  font-size: 1.5rem;
+  margin-right: 3px;
+}
+
+.score-display .star.filled {
+  color: #ffcc00;
+}
+
+.score-display span {
+  margin-left: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* ===== CONȚINUT PDF ===== */
+.pdf-container {
+  margin-top: 30px;
+}
+
+.pdf-container h3 {
+  font-size: 1.2rem;
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+.pdf-link {
+  display: flex;
+  align-items: center;
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.pdf-link:hover {
+  color: #0d47a1;
+}
+
+.pdf-link .download-icon {
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.pdf-link:hover .download-icon {
+  transform: translateY(-2px);
+}
+
 /* ===== CONȚINUT SURSE ===== */
 .sources-container {
   margin-top: 30px;
@@ -107,11 +186,61 @@
 }
 
 .sources-container ul {
-  list-style-type: disc;
-  padding-left: 20px;
+  list-style-type: none;
+  padding-left: 0;
 }
 
 .sources-container li {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   color: #333;
+}
+
+.sources-container li strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.sources-container li p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* ===== RESPONSIVITATE ===== */
+@media (max-width: 768px) {
+  .add-document-container {
+    padding: 20px 15px;
+  }
+
+  .add-document-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .submit-button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .score-display .star {
+    font-size: 1.3rem;
+  }
+
+  .score-display span {
+    font-size: 1rem;
+  }
+
+  .pdf-link {
+    font-size: 0.95rem;
+  }
+
+  .pdf-link .download-icon {
+    margin-left: 3px;
+    font-size: 1.1rem;
+  }
+
+  .sources-container li p {
+    font-size: 0.9rem;
+  }
 }
