@@ -644,3 +644,44 @@ h1.title {
     }
   }
   
+/* ===== BUTON "VERIFICĂ DOCUMENT" ===== */
+.verify-document-button {
+    position: fixed; /* Fixat în poziție */
+    bottom: 20px; /* 20px de la partea de jos */
+    right: 20px; /* 20px de la partea dreaptă */
+    padding: 12px 20px;
+    background-color: #1976d2; /* Albastru similar cu alte butoane */
+    color: #fff;
+    border: none;
+    border-radius: 50px; /* Buton rotund */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 1200; /* Asigură-te că butonul este deasupra altor elemente */
+}
+
+.verify-document-button:hover {
+    background-color: #1565c0; /* Albastru mai închis la hover */
+    transform: translateY(-2px);
+}
+
+.verify-document-button .icon {
+    margin-right: 8px; /* Spațiere între iconiță și text */
+}
+
+/* ===== RESPONSIVITATE BUTON ===== */
+@media (max-width: 768px) {
+    .verify-document-button {
+        padding: 10px 16px;
+        font-size: 14px;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .verify-document-button .icon {
+        margin-right: 6px;
+    }
+}

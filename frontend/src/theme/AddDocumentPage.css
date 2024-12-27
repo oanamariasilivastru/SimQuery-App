@@ -1,0 +1,117 @@
+/* src/theme/AddDocumentPage.css */
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.add-document-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== BUTON DE ÎNAPOI ===== */
+.back-button {
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #007BFF;
+}
+
+/* ===== FORMULAR DE ÎNCĂRCARE DOCUMENT ===== */
+.add-document-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  display: block;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.form-group input[type="file"] {
+  padding: 8px;
+  border: 1px solid #1976d2;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input[type="file"]:focus {
+  outline: none;
+  border-color: #0d47a1;
+}
+
+/* ===== BUTON DE TRIMITERE ===== */
+.submit-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.submit-button:disabled {
+  background-color: #9E9E9E;
+  cursor: not-allowed;
+}
+
+/* ===== INDICATOR DE ÎNCĂRCARE ===== */
+.loading-indicator {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+/* ===== MESAJ DE EROARE ===== */
+.error-message {
+  color: red;
+  margin-top: 20px;
+}
+
+/* ===== CONȚINUT SURSE ===== */
+.sources-container {
+  margin-top: 30px;
+}
+
+.sources-container h3 {
+  font-size: 1.2rem;
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+.sources-container ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.sources-container li {
+  margin-bottom: 10px;
+  color: #333;
+}

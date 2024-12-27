@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import InputForm from './InputForm';
 import ResultList from './ResultList';
 import ToggleButton from './ToggleButton';
-import { FiSun, FiMoon, FiLogOut } from 'react-icons/fi';
+import { FiSun, FiMoon, FiLogOut, FiPlus } from 'react-icons/fi'; // Import FiPlus
 import { useNavigate } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
 import SimilarContradictingList from './SimilarContradictingList';
@@ -149,21 +149,21 @@ function MainPage({ setIsAuthenticated }) {
   
     const normalizedInput = inputText.toLowerCase().trim();
     const matchedKey = predefinedQueriesMap[normalizedInput];
-  
+
     if (matchedKey) {
       console.log("Frază recunoscută. Se vor afișa doar datele hardcodate:", matchedKey);
       
       // Setăm rezultatele fără prompt
       setResults([matchedKey]);
       setError(null);
-  
+
       const newHistoryItem = {
-        texts: inputText,
+        text: inputText, // Am schimbat 'texts' la 'text' pentru consistență
         date: new Date().toISOString(),
         results: [matchedKey],
         prompt: scenarioData[matchedKey].prompt, // <-- Adăugăm promptul
       };
-  
+
       setHistory((prevHistory) => {
         const updatedHistory = [newHistoryItem, ...prevHistory];
         localStorage.setItem('localHistory', JSON.stringify(updatedHistory));
@@ -171,10 +171,10 @@ function MainPage({ setIsAuthenticated }) {
       });
       return;
     }
-  
+
     setLoading(true);
     setError(null);
-  
+
     try {
       const response = await fetch(`${API_BASE_URL}/predict`, {
         method: 'POST',
@@ -184,7 +184,7 @@ function MainPage({ setIsAuthenticated }) {
         },
         body: JSON.stringify({ text: inputText }),
       });
-  
+
       if (!response.ok) {
         if (response.status === 401) {
           handleUnauthorized();
@@ -193,16 +193,17 @@ function MainPage({ setIsAuthenticated }) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Prediction error');
       }
-  
+
       const data = await response.json();
       if (data.results && Array.isArray(data.results)) {
         setResults(data.results);
         setError(null);
-  
+
         const newHistoryItem = {
-          texts: inputText,
+          text: inputText, // Am schimbat 'texts' la 'text' pentru consistență
           date: new Date().toISOString(),
           results: data.results,
+          prompt: data.prompt || 'No prompt available from server',
         };
         setHistory((prevHistory) => {
           const updatedHistory = [newHistoryItem, ...prevHistory];
@@ -217,9 +218,9 @@ function MainPage({ setIsAuthenticated }) {
       console.error('Error:', error);
       setError(`${error.message}. Displaying default information.`);
       setResults(defaultResults);
-  
+
       const fallbackHistoryItem = {
-        texts: inputText,
+        text: inputText, // Am schimbat 'texts' la 'text' pentru consistență
         date: new Date().toISOString(),
         results: defaultResults,
       };
@@ -257,6 +258,11 @@ function MainPage({ setIsAuthenticated }) {
     setProfileData(updatedProfile);
   };
 
+  // Definim funcția pentru navigare la AddDocumentPage
+  const handleAddDocumentClick = () => {
+    navigate('/add-document');
+  };
+
   return (
     <div className={`app-container ${isDarkMode ? 'dark-mode' : ''}`}>
       <Sidebar
@@ -280,6 +286,16 @@ function MainPage({ setIsAuthenticated }) {
         <FiLogOut size={20} />
       </button>
 
+      {/* Adăugăm butonul "Verifică Document" */}
+      <button
+        onClick={handleAddDocumentClick}
+        className="verify-document-button"
+        aria-label="Verifică Document"
+      >
+        <FiPlus size={20} className="icon" />
+        Verifică Document
+      </button>
+      
       <div className="main-content">
         <h1 className="title">SimQuery</h1>
         <InputForm
