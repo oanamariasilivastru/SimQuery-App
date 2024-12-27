@@ -12,15 +12,17 @@ const InputForm = ({ inputText, handleInputChange, checkSimilarity }) => {
   return (
     <form onSubmit={handleSubmit} className="input-container">
       <textarea
-        placeholder="Introduceți o frază..."
+        placeholder="Enter a phrase..."
         value={inputText}
-        onChange={(e) => handleInputChange(e.target.value)} // Extrage valoarea inputului
+        onChange={(e) => handleInputChange(e.target.value)}
         className="text-input"
         required
         rows={4}
-      />
+        style={{ '::placeholder': { color: 'black' } }}
+    />
+
       <button type="submit" className="check-button">
-        Verifică Similaritatea
+        Check similarity
       </button>
     </form>
   );

@@ -293,7 +293,7 @@ function MainPage({ setIsAuthenticated }) {
         aria-label="Verifică Document"
       >
         <FiPlus size={20} className="icon" />
-        Verifică Document
+        Check document
       </button>
       
       <div className="main-content">

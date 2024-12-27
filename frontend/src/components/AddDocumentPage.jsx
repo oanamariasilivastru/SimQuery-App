@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiUpload, FiFileText, FiDownload } from 'react-icons/fi';
-import { FaStar } from 'react-icons/fa'; // Pentru afișarea scorului de încredere
+import { FaStar } from 'react-icons/fa'; // For displaying the confidence score
 import '../theme/AddDocumentPage.css';
 
 function AddDocumentPage() {
@@ -104,7 +104,7 @@ function AddDocumentPage() {
       </button>
       <form onSubmit={handleSubmit} className="add-document-form">
         <div className="form-group">
-          <label htmlFor="document">Selectează un document (PDF, DOCX):</label>
+          <label htmlFor="document">Select a document (PDF, DOCX):</label>
           <input
             type="file"
             id="document"
@@ -119,7 +119,7 @@ function AddDocumentPage() {
         </button>
       </form>
 
-      {loading && <div className="loading-indicator">Procesăm documentul...</div>}
+      {loading && <div className="loading-indicator">Processing document...</div>}
 
       {error && <p className="error-message">{error}</p>}
 
@@ -140,7 +140,7 @@ function AddDocumentPage() {
 
       {sources.length > 0 && (
         <div className="sources-container">
-          <h3>Surse detectate</h3>
+          <h3>Detected Sources</h3>
           <ul>
             {sources.map((source, index) => (
               <li key={index}>

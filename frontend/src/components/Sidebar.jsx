@@ -23,14 +23,14 @@ const Sidebar = ({ isOpen, user, history, onHistoryItemClick, onProfileClick }) 
       {/* Vizualizare Profil */}
       <div className="profile-view" onClick={onProfileClick} style={{ cursor: 'pointer' }}>
         <FiEye size={20} />
-        <span>Vizualizează Profil</span>
+        <span>View Profile</span>
       </div>
 
       {/* Istoric Căutări */}
       <div className="history">
-        <h2>Istoricul Căutărilor</h2>
+        <h2>History</h2>
         {history.length === 0 ? (
-          <p>Nu există căutări efectuate.</p>
+          <p>No searches performed.</p>
         ) : (
           history.map((item, index) => (
             <HistoryItem
