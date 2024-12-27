@@ -1,20 +1,22 @@
-// HistoryItem.jsx
+// src/components/HistoryItem.jsx
+
 import React from 'react';
 import { format } from 'date-fns';
 import { FiClock } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 
-const HistoryItem = ({ text, date, onClick }) => {
+const HistoryItem = ({ text = '', date, prompt = '', onClick }) => {
   let formattedDate;
 
   try {
     formattedDate = format(new Date(date), 'dd MMM yyyy, HH:mm');
   } catch (error) {
     console.error('Error formatting date:', error);
-    formattedDate = 'Data invalida';
+    formattedDate = 'Data invalidă';
   }
 
-  // Split the text into title and body at the first hyphen
+  // Exemplu: "Titlu - body text"
+  // (doar dacă vrei să separi textul prin cratimă)
   const hyphenIndex = text.indexOf('-');
   let title = '';
   let body = '';
@@ -23,7 +25,6 @@ const HistoryItem = ({ text, date, onClick }) => {
     title = text.substring(0, hyphenIndex).trim();
     body = text.substring(hyphenIndex + 1).trim();
   } else {
-    // If no hyphen, treat the entire text as body
     body = text;
   }
 
@@ -33,6 +34,14 @@ const HistoryItem = ({ text, date, onClick }) => {
         {title && <strong>{title} - </strong>}
         <span className="history-body">{body}</span>
       </p>
+
+      {/* Afișăm promptul dacă există */}
+      {prompt && (
+        <p className="history-prompt">
+          <em>{prompt}</em>
+        </p>
+      )}
+
       <div className="history-date">
         <FiClock className="mr-1" />
         <span>{formattedDate}</span>
@@ -42,9 +51,10 @@ const HistoryItem = ({ text, date, onClick }) => {
 };
 
 HistoryItem.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   date: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired, // Adaugă PropType
+  prompt: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default HistoryItem;

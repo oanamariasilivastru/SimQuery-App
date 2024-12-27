@@ -1,4 +1,5 @@
-// InputForm.jsx
+// src/components/InputForm.jsx
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -13,7 +14,7 @@ const InputForm = ({ inputText, handleInputChange, checkSimilarity }) => {
       <textarea
         placeholder="Introduceți o frază..."
         value={inputText}
-        onChange={handleInputChange}
+        onChange={(e) => handleInputChange(e.target.value)} // Extrage valoarea inputului
         className="text-input"
         required
         rows={4}

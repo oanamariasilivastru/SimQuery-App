@@ -37,6 +37,7 @@ const Sidebar = ({ isOpen, user, history, onHistoryItemClick, onProfileClick }) 
               key={index}
               text={item.text}
               date={item.date}
+              prompt={item.prompt}
               onClick={() => onHistoryItemClick(item)}
             />
           ))

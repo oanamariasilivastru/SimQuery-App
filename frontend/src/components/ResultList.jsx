@@ -1,23 +1,29 @@
-// ResultList.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import ResultItem from './ResultItem';
 
 const ResultList = ({ results }) => {
-  if (!results || !Array.isArray(results) || results.length === 0) {
-    return <p>No results to display.</p>;
+  if (!results || results.length === 0) {
+    return null;
+  }
+
+  // Filtrăm rezultatele fără text
+  const filteredResults = results.filter((result) => result.text);
+
+  if (filteredResults.length === 0) {
+    return null; // Dacă nu avem rezultate valide, nu afișăm nimic
   }
 
   return (
     <div className="results-container">
-      <h2 className="results-title">Top 5 Texte Similare:</h2>
       <ul className="results-list">
-        {results.map((item, index) => (
+        {filteredResults.map((result, index) => (
           <ResultItem
             key={index}
-            sentence={item.sentence}
-            score={item.score}
             index={index}
+            sentence={result.text}
+            score={result.score || 0}
+            searchWords={result.searchWords || []}
           />
         ))}
       </ul>
@@ -25,11 +31,13 @@ const ResultList = ({ results }) => {
   );
 };
 
+
 ResultList.propTypes = {
   results: PropTypes.arrayOf(
     PropTypes.shape({
-      sentence: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
       score: PropTypes.number.isRequired,
+      searchWords: PropTypes.arrayOf(PropTypes.string),
     })
   ).isRequired,
 };

@@ -1,9 +1,10 @@
-// ResultItem.jsx
+// src/components/ResultItem.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import Stars from './Stars';
 import PropTypes from 'prop-types';
+import Highlighter from 'react-highlight-words';
 
-const ResultItem = ({ sentence, score, index }) => {
+const ResultItem = ({ sentence, score, searchWords, index }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const itemRef = useRef(null);
 
@@ -17,18 +18,8 @@ const ResultItem = ({ sentence, score, index }) => {
     return () => clearTimeout(timeout);
   }, [index]);
 
-  // Split the sentence into title and body at the first hyphen
-  const hyphenIndex = sentence.indexOf('-');
-  let title = '';
-  let body = '';
-
-  if (hyphenIndex !== -1) {
-    title = sentence.substring(0, hyphenIndex).trim();
-    body = sentence.substring(hyphenIndex + 1).trim();
-  } else {
-    // If no hyphen, treat the entire sentence as body
-    body = sentence;
-  }
+  // Tot textul e "body", fără split
+  const body = sentence;
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
@@ -38,16 +29,22 @@ const ResultItem = ({ sentence, score, index }) => {
       className={`result-item p-3 rounded mb-2 ${index === 0 ? 'border-2 border-blue-500' : ''}`}
     >
       <div className="text-black font-medium">
-        {title && <strong>{title} - </strong>}
         <span className={`sentence-body ${isExpanded ? 'expanded' : 'collapsed'}`}>
-          {body}
+          <Highlighter
+            highlightClassName="highlight"
+            searchWords={searchWords}
+            autoEscape={true}
+            textToHighlight={body}
+          />
         </span>
       </div>
+
       {body.length > 100 && (
         <button className="see-more-button" onClick={toggleExpand}>
-          {isExpanded ? 'Vezi mai puțin': 'Vezi mai mult'}
+          {isExpanded ? 'Vezi mai puțin' : 'Vezi mai mult'}
         </button>
       )}
+
       <div className="flex items-center text-gray-400 text-sm mt-1">
         <span className="mr-2">Scor:</span>
         <Stars score={score} />
@@ -59,6 +56,7 @@ const ResultItem = ({ sentence, score, index }) => {
 ResultItem.propTypes = {
   sentence: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  searchWords: PropTypes.arrayOf(PropTypes.string).isRequired,
   index: PropTypes.number.isRequired,
 };
 
